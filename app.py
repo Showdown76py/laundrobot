@@ -16,6 +16,8 @@ from logging.handlers import TimedRotatingFileHandler
 
 fP = os.path.dirname(os.path.realpath(__file__))
 
+load_dotenv()
+
 
 
 for log_name, log_obj in logging.Logger.manager.loggerDict.items():
@@ -68,4 +70,4 @@ async def on_ready():
 		await bot.change_presence(activity=discord.Game("monitoring your laundromat"))
 
 
-bot.run()
+bot.run(os.getenv('token'))
