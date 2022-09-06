@@ -67,6 +67,59 @@ def write_to_file(name: str, extension: str="json", data=None, create_if_unavail
 
 
 
+class Laundromat:
+	def __init__(self):
+		pass
+
+	def get(self, name: str, raise_error_if_not_found: bool=True):
+		data = read_file('database')['connected']
+
+		if data.get(name) is None:
+			if raise_error_if_not_found:
+				raise UnknownLaundromat(f"The laundromat '{name}' is no where to be found.")
+
+			else:
+				return None
+
+		return data[name]
+
+
+
+	def get_connected(self, only_links: bool=False):
+		data = read_file("database")['connected']
+		connected = []
+
+		for laundro in data:
+			if only_links:
+				connected.append(data[laundro]['link'])
+			else:
+				connected.append(data[laundro])
+
+		return connected
+
+	def fetch_all(self, format_for_select: bool=False):
+		data = read_file("database")['connected']
+
+		if format_for_select:
+			fetched = []
+
+			for laundro in data:
+				obj = [
+					laundro, # resName
+					'🏫' if data[laundro]['type'] == "residence" else '👕', #resTypeEmote
+					data[laundro]['desc']
+				]
+				fetched.append(obj)
+
+
+			return fetched
+
+		return data
+
+
+
+
+laundromat = Laundromat()
 
 
 
